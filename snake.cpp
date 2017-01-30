@@ -10,6 +10,64 @@
 #define KB_ESCAPE 27
 
 
+int menu(bool playgame)
+{
+    int timeout;
+    char readInput;
+    int posYMenu = 5;
+    bool quit;
+    bool flash;
+
+    printf("----------------------------- \n");
+    printf("|           SNAKE           | \n");
+    printf("----------------------------- \n");
+    gotoxy(5, 5);
+    printf("Play");
+    gotoxy(5, 7);
+    printf("Quit");
+
+    for(timeout = 0; timeout != 9999;)
+    {
+
+        if(kbhit())
+        {
+            readInput = getch();
+            switch(readInput)
+            {
+            case KB_UP :
+                posYMenu = 5;
+                gotoxy(3, posYMenu);
+                printf(">");
+                gotoxy(3, 7);
+                printf(" ");
+                break;
+            case KB_DOWN :
+                posYMenu = 7;
+                gotoxy(3, 5);
+                printf(" ");
+                gotoxy(3, posYMenu);
+                printf(">");
+                break;
+            case KB_LEFT :
+                if(posYMenu == 5)
+                {
+                    playgame = true;
+                }
+                if(posYMenu == 7)
+                {
+                    playgame = false;
+                }
+
+                timeout = 9999;
+                break;
+            }
+        }
+    }
+    return playgame;
+
+}
+
+
 int main(void){
     int posX = 15;
     int posY = 15;
@@ -18,14 +76,19 @@ int main(void){
     int velocityX = 0;
     int velocityY = 0;
     bool canSpawn = true;
+    bool playgame;
     int score = 0;
 
     char readInput;
     int endGame;
     int recordEnd;
 
-    for(endGame = 9999; recordEnd != endGame;)
+    playgame = menu(playgame);
+
+    if(playgame)
     {
+        for(endGame = 9999; recordEnd != endGame || !playgame;)
+        {
         if(kbhit())
         {
             readInput = getch();
@@ -125,5 +188,9 @@ int main(void){
         printf("O");
 
         Sleep(100);
+
+    }
+
+
     }
 }
